@@ -2,6 +2,9 @@ import { supabase } from "@/lib/supabase";
 import HomeClient from "@/components/HomeClient";
 import type { ExtractionRecord } from "@/types";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function Home() {
   // Fetch existing extractions sorted by created_at desc
   const { data, error } = await supabase
