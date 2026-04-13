@@ -147,11 +147,28 @@ export default function HomeClient({
     setUploadStep(1);
 
     try {
-      // 1. Process image: only compress if > 5MB
       let finalFile: Blob | File = file;
-      if (file.size > 5 * 1024 * 1024) {
+
+      // 0. Convert HEIC to JPEG if needed
+      if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic")) {
+        setUploadProgress("Converting HEIC to JPEG...");
+        const heic2any = (await import("heic2any")).default;
+        const convertedBlob = await heic2any({
+          blob: file,
+          toType: "image/jpeg",
+          quality: 0.9,
+        });
+        
+        const blobObj = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+        finalFile = new File([blobObj], file.name.replace(/\.heic$/i, ".jpg"), {
+          type: "image/jpeg",
+        });
+      }
+
+      // 1. Process image: only compress if > 5MB
+      if (finalFile.size > 5 * 1024 * 1024) {
         setUploadProgress("Compressing image...");
-        finalFile = await imageCompression(file, {
+        finalFile = await imageCompression(finalFile as File, {
           maxSizeMB: 5,
           maxWidthOrHeight: 4096, // Preserve decent resolution
           useWebWorker: true,
