@@ -169,9 +169,19 @@ export default function HomeClient({
         body: imgurForm,
       });
 
-      const imgurData = await imgurRes.json();
-      if (!imgurRes.ok || !imgurData.link) {
-        throw new Error(imgurData.error || "Upload failed");
+      let imgurData: any = {};
+      try {
+        imgurData = await imgurRes.json();
+      } catch (e) {
+        // ignore JSON parse error if imgur fails catastrophically
+      }
+
+      let imageUrl = null;
+      if (imgurRes.ok && imgurData.link) {
+        imageUrl = imgurData.link;
+      } else {
+        console.warn("Imgur upload failed or skipped, proceeding without image URL. Reason:", imgurData.error);
+        // We do *not* throw an error here, so the process continues directly to the backend extractor.
       }
 
       // 3. Create Supabase record
@@ -183,7 +193,7 @@ export default function HomeClient({
         .from("extraction")
         .insert({
           id,
-          image_url: imgurData.link,
+          image_url: imageUrl,
           extraction: null,
           confidence: null,
           is_handwritten: null,
