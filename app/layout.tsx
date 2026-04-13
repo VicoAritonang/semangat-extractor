@@ -3,7 +3,7 @@ import "./globals.css";
 import PasswordGate from "@/components/PasswordGate";
 
 export const metadata: Metadata = {
-  title: "Semangat ✦ Image to Equation",
+  title: "Semangat ✦",
   description:
     "Extract mathematical equations from images with AI-powered recognition. Upload, edit, and export LaTeX equations seamlessly.",
   keywords: ["equation extractor", "LaTeX", "OCR", "math", "image to equation"],
@@ -38,6 +38,11 @@ export default function RootLayout({
 
         {/* Shooting stars */}
         <div className="shooting-stars">
+          <div className="shooting-star" />
+          <div className="shooting-star" />
+          <div className="shooting-star" />
+          <div className="shooting-star" />
+          <div className="shooting-star" />
           <div className="shooting-star" />
           <div className="shooting-star" />
           <div className="shooting-star" />

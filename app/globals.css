@@ -187,32 +187,73 @@ body {
   position: absolute;
   width: 100px;
   height: 1px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), transparent);
+  /* Gradient reversed since it moves from right to left (head on left, tail on right) */
+  background: linear-gradient(-90deg, rgba(255, 255, 255, 0.9), transparent);
   border-radius: 50%;
   opacity: 0;
 }
 
 .shooting-star:nth-child(1) {
   top: 12%;
-  left: -100px;
-  animation: shoot 4s ease-in 2s infinite;
-  transform: rotate(-15deg);
+  right: -100px;
+  animation: shoot-rtl 4s ease-in 2s infinite;
+  transform: rotate(15deg);
 }
 
 .shooting-star:nth-child(2) {
   top: 35%;
-  left: -100px;
-  animation: shoot 5s ease-in 6s infinite;
-  transform: rotate(-20deg);
+  right: -100px;
+  animation: shoot-rtl 5s ease-in 6s infinite;
+  transform: rotate(20deg);
   width: 80px;
 }
 
 .shooting-star:nth-child(3) {
   top: 58%;
-  left: -100px;
-  animation: shoot 3.5s ease-in 11s infinite;
-  transform: rotate(-10deg);
+  right: -100px;
+  animation: shoot-rtl 3.5s ease-in 11s infinite;
+  transform: rotate(10deg);
   width: 120px;
+}
+
+.shooting-star:nth-child(4) {
+  top: 80%;
+  right: -100px;
+  animation: shoot-rtl 4.5s ease-in 4s infinite;
+  transform: rotate(25deg);
+  width: 90px;
+}
+
+.shooting-star:nth-child(5) {
+  top: 25%;
+  right: -100px;
+  animation: shoot-rtl 3.8s ease-in 8s infinite;
+  transform: rotate(12deg);
+  width: 150px;
+}
+
+.shooting-star:nth-child(6) {
+  top: 70%;
+  right: -100px;
+  animation: shoot-rtl 6s ease-in 1s infinite;
+  transform: rotate(18deg);
+  width: 110px;
+}
+
+.shooting-star:nth-child(7) {
+  top: 45%;
+  right: -100px;
+  animation: shoot-rtl 5.5s ease-in 14s infinite;
+  transform: rotate(22deg);
+  width: 130px;
+}
+
+.shooting-star:nth-child(8) {
+  top: 5%;
+  right: -100px;
+  animation: shoot-rtl 4.2s ease-in 9s infinite;
+  transform: rotate(14deg);
+  width: 140px;
 }
 
 /* ══════════════════════════════════════════════════
@@ -241,11 +282,12 @@ body {
   100% { opacity: 0.8; transform: scale(1.01); }
 }
 
-@keyframes shoot {
-  0% { opacity: 0; transform: translateX(0) rotate(-15deg); }
+@keyframes shoot-rtl {
+  /* It starts from right, translating negatively over the screen towards the left */
+  0% { opacity: 0; transform: translateX(0) scaleX(1); }
   5% { opacity: 1; }
-  40% { opacity: 0; transform: translateX(calc(100vw + 200px)) rotate(-15deg); }
-  100% { opacity: 0; transform: translateX(calc(100vw + 200px)) rotate(-15deg); }
+  40% { opacity: 0; transform: translateX(calc(-100vw - 200px)) scaleX(1.5); }
+  100% { opacity: 0; transform: translateX(calc(-100vw - 200px)); }
 }
 
 @keyframes float {
