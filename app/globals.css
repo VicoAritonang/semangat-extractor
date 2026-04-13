@@ -1,26 +1,1956 @@
 @import "tailwindcss";
 
+/* ══════════════════════════════════════════════════
+   ✦ COSMIC DEEP-SPACE DESIGN SYSTEM ✦
+   A universe of equations awaits...
+   ══════════════════════════════════════════════════ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Deep space palette */
+  --bg-void: #020108;
+  --bg-deep: #05050f;
+  --bg-nebula: #0a0a1a;
+  --bg-card: rgba(12, 12, 32, 0.75);
+  --bg-card-hover: rgba(20, 20, 50, 0.85);
+  --bg-glass: rgba(255, 255, 255, 0.03);
+  --bg-glass-hover: rgba(255, 255, 255, 0.06);
+  --bg-glass-active: rgba(255, 255, 255, 0.09);
+
+  /* Cosmic accent palette */
+  --accent-nebula: #7c3aed;
+  --accent-nebula-glow: rgba(124, 58, 237, 0.5);
+  --accent-star: #f5a623;
+  --accent-cosmic: #06b6d4;
+  --accent-cosmic-glow: rgba(6, 182, 212, 0.4);
+  --accent-aurora: #10b981;
+  --accent-aurora-glow: rgba(16, 185, 129, 0.4);
+  --accent-supernova: #ef4444;
+  --accent-galaxy: #8b5cf6;
+  --accent-galaxy-glow: rgba(139, 92, 246, 0.4);
+  --accent-pulsar: #ec4899;
+  --accent-solar: #fbbf24;
+  --accent-plasma: #3b82f6;
+
+  /* Text hierarchy */
+  --text-primary: #f0f0ff;
+  --text-secondary: rgba(200, 200, 240, 0.75);
+  --text-muted: rgba(150, 150, 200, 0.5);
+  --text-ghost: rgba(130, 130, 200, 0.3);
+
+  /* Border system */
+  --border-subtle: rgba(120, 120, 200, 0.1);
+  --border-glow: rgba(124, 58, 237, 0.25);
+  --border-cosmic: rgba(6, 182, 212, 0.2);
+  --border-aurora: rgba(16, 185, 129, 0.2);
+
+  /* Glow effects */
+  --glow-nebula: 0 0 20px rgba(124, 58, 237, 0.15), 0 0 60px rgba(124, 58, 237, 0.05);
+  --glow-cosmic: 0 0 20px rgba(6, 182, 212, 0.15), 0 0 60px rgba(6, 182, 212, 0.05);
+  --glow-aurora: 0 0 20px rgba(16, 185, 129, 0.15);
+  --glow-star: 0 0 12px rgba(245, 166, 35, 0.3), 0 0 40px rgba(245, 166, 35, 0.1);
+  --glow-pulsar: 0 0 20px rgba(236, 72, 153, 0.15);
+
+  /* Spacing & radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-body: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg-void);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ═══ Reset & Base ═══ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  background: var(--bg-void);
+  color: var(--text-primary);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ STARFIELD — Multi-layer parallax star system
+   ══════════════════════════════════════════════════ */
+.starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Distant stars — tiny, subtle, slow twinkle */
+.starfield::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 25% 35%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1.2px 1.2px at 40% 65%, rgba(200, 210, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 55% 20%, rgba(200, 200, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 70% 80%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 85% 45%, rgba(220, 220, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 15% 75%, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 30% 90%, rgba(200, 210, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 95% 10%, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1.2px 1.2px at 60% 50%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 80% 30%, rgba(200, 200, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 45% 85%, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 5% 50%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 90% 65%, rgba(220, 220, 255, 0.3), transparent),
+    radial-gradient(1.2px 1.2px at 35% 10%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 65% 95%, rgba(200, 210, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 20% 55%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 75% 5%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 50% 40%, rgba(200, 220, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 12% 92%, rgba(255, 255, 255, 0.3), transparent);
+  animation: star-drift 120s linear infinite, twinkle 8s ease-in-out infinite alternate;
+}
+
+/* Close stars — brighter, colored, faster twinkle */
+.starfield::after {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  width: 160%;
+  height: 160%;
+  background-image:
+    radial-gradient(2px 2px at 8% 28%, rgba(124, 58, 237, 0.6), transparent),
+    radial-gradient(1.8px 1.8px at 22% 72%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(2px 2px at 38% 18%, rgba(6, 182, 212, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 52% 58%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(2.5px 2.5px at 68% 42%, rgba(245, 166, 35, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 82% 88%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(2px 2px at 48% 8%, rgba(139, 92, 246, 0.4), transparent),
+    radial-gradient(1.5px 1.5px at 92% 52%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(2px 2px at 18% 38%, rgba(6, 182, 212, 0.4), transparent),
+    radial-gradient(2px 2px at 72% 68%, rgba(236, 72, 153, 0.3), transparent),
+    radial-gradient(1.5px 1.5px at 58% 78%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(2px 2px at 32% 48%, rgba(245, 166, 35, 0.3), transparent),
+    radial-gradient(1.5px 1.5px at 88% 22%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(2.5px 2.5px at 42% 32%, rgba(16, 185, 129, 0.35), transparent),
+    radial-gradient(1.5px 1.5px at 78% 12%, rgba(255, 255, 255, 0.5), transparent);
+  animation: star-drift-reverse 90s linear infinite, twinkle 6s ease-in-out 2s infinite alternate-reverse;
+}
+
+/* ═══ Nebula Background ═══ */
+.nebula-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 15% 85%, rgba(124, 58, 237, 0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 85% 15%, rgba(6, 182, 212, 0.06), transparent),
+    radial-gradient(ellipse 50% 60% at 50% 50%, rgba(139, 92, 246, 0.03), transparent),
+    radial-gradient(ellipse 40% 30% at 70% 70%, rgba(236, 72, 153, 0.04), transparent),
+    radial-gradient(ellipse 90% 70% at 30% 20%, rgba(2, 1, 8, 0.5), transparent);
+  animation: nebula-breathe 20s ease-in-out infinite alternate;
+}
+
+/* ═══ Shooting Stars Layer ═══ */
+.shooting-stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.shooting-star {
+  position: absolute;
+  width: 100px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), transparent);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.shooting-star:nth-child(1) {
+  top: 12%;
+  left: -100px;
+  animation: shoot 4s ease-in 2s infinite;
+  transform: rotate(-15deg);
+}
+
+.shooting-star:nth-child(2) {
+  top: 35%;
+  left: -100px;
+  animation: shoot 5s ease-in 6s infinite;
+  transform: rotate(-20deg);
+  width: 80px;
+}
+
+.shooting-star:nth-child(3) {
+  top: 58%;
+  left: -100px;
+  animation: shoot 3.5s ease-in 11s infinite;
+  transform: rotate(-10deg);
+  width: 120px;
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ KEYFRAME ANIMATIONS
+   ══════════════════════════════════════════════════ */
+
+@keyframes twinkle {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+@keyframes star-drift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-5%, -3%); }
+}
+
+@keyframes star-drift-reverse {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(3%, -2%); }
+}
+
+@keyframes nebula-breathe {
+  0% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+  100% { opacity: 0.8; transform: scale(1.01); }
+}
+
+@keyframes shoot {
+  0% { opacity: 0; transform: translateX(0) rotate(-15deg); }
+  5% { opacity: 1; }
+  40% { opacity: 0; transform: translateX(calc(100vw + 200px)) rotate(-15deg); }
+  100% { opacity: 0; transform: translateX(calc(100vw + 200px)) rotate(-15deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-4px) rotate(1deg); }
+  66% { transform: translateY(2px) rotate(-0.5deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: var(--glow-nebula); }
+  50% { box-shadow: 0 0 30px rgba(124, 58, 237, 0.3), 0 0 80px rgba(124, 58, 237, 0.1); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes orbit {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes orbit-reverse {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes wormhole-spin {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.05); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes cosmic-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes border-glow-pulse {
+  0%, 100% { border-color: rgba(124, 58, 237, 0.15); }
+  50% { border-color: rgba(124, 58, 237, 0.35); }
+}
+
+@keyframes text-glow {
+  0%, 100% { text-shadow: 0 0 20px rgba(124, 58, 237, 0.3); }
+  50% { text-shadow: 0 0 40px rgba(124, 58, 237, 0.5), 0 0 80px rgba(124, 58, 237, 0.2); }
+}
+
+@keyframes reveal-up {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes analyzer-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 0 20px 6px rgba(16, 185, 129, 0.15); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+@keyframes ring-expand {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+@keyframes glow-line {
+  0% { transform: scaleX(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ MAIN CONTENT CONTAINER
+   ══════════════════════════════════════════════════ */
+.main-content {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  padding: 16px;
+  padding-bottom: 40px;
+  max-width: 640px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .main-content {
+    padding: 32px 24px;
+    padding-bottom: 60px;
+    max-width: 720px;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ GLASS CARDS — Cosmic glassmorphism
+   ══════════════════════════════════════════════════ */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(124, 58, 237, 0.3),
+    rgba(6, 182, 212, 0.2),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.glass-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-glow);
+  box-shadow: var(--glow-nebula);
+}
+
+.glass-card:hover::before {
+  opacity: 1;
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ BUTTONS — Cosmic interactive elements
+   ══════════════════════════════════════════════════ */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--accent-nebula), var(--accent-galaxy), var(--accent-cosmic));
+  background-size: 200% 200%;
+  animation: cosmic-gradient 4s ease infinite;
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.01em;
+}
+
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 4px 20px rgba(124, 58, 237, 0.4),
+    0 8px 40px rgba(124, 58, 237, 0.15);
+}
+
+.btn-primary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  animation: none;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--bg-glass);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-secondary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(6, 182, 212, 0.05));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-glass-hover);
+  color: var(--text-primary);
+  border-color: var(--border-glow);
+  box-shadow: var(--glow-nebula);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:hover::after {
+  opacity: 1;
+}
+
+.btn-secondary:active {
+  transform: scale(0.96) translateY(0);
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: var(--bg-glass);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-icon:hover {
+  background: var(--bg-glass-hover);
+  color: var(--text-primary);
+  border-color: var(--border-glow);
+  box-shadow: var(--glow-nebula);
+  transform: rotate(5deg) scale(1.05);
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ UPLOAD ZONE — Space portal
+   ══════════════════════════════════════════════════ */
+.upload-zone {
+  border: 2px dashed var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 36px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--bg-glass);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated border glow on hover */
+.upload-zone::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at 50% 100%,
+    rgba(124, 58, 237, 0.06),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.upload-zone:hover::before,
+.upload-zone.drag-over::before {
+  opacity: 1;
+}
+
+.upload-zone:hover,
+.upload-zone.drag-over {
+  border-color: var(--accent-nebula);
+  background: rgba(124, 58, 237, 0.04);
+  box-shadow: inset 0 0 40px rgba(124, 58, 237, 0.06), var(--glow-nebula);
+  transform: scale(1.01);
+}
+
+.upload-zone.has-file {
+  border-color: var(--accent-aurora);
+  background: rgba(16, 185, 129, 0.04);
+  border-style: solid;
+}
+
+.upload-zone.has-file:hover {
+  box-shadow: inset 0 0 40px rgba(16, 185, 129, 0.06), var(--glow-aurora);
+}
+
+.upload-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(6, 182, 212, 0.1));
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  margin-bottom: 16px;
+  animation: float 4s ease-in-out infinite;
+  position: relative;
+}
+
+.upload-icon-wrap::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(124, 58, 237, 0.1);
+  animation: orbit 8s linear infinite;
+}
+
+.upload-preview {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: var(--radius-md);
+  margin-top: 12px;
+  object-fit: contain;
+  border: 1px solid var(--border-subtle);
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ EXTRACTION LIST — Star catalog
+   ══════════════════════════════════════════════════ */
+.extraction-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+}
+
+.extraction-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent-nebula), var(--accent-cosmic));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.extraction-item:hover {
+  background: var(--bg-glass-hover);
+  border-color: var(--border-glow);
+  transform: translateX(6px);
+  box-shadow: var(--glow-nebula);
+}
+
+.extraction-item:hover::before {
+  opacity: 1;
+}
+
+.extraction-id {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-cosmic);
+  background: rgba(6, 182, 212, 0.08);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(6, 182, 212, 0.1);
+}
+
+.extraction-date {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ SEGMENT RENDERING — Equation constellation
+   ══════════════════════════════════════════════════ */
+.segment-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.segment-container:hover {
+  border-color: var(--border-glow);
+  box-shadow: var(--glow-nebula);
+}
+
+/* Subtle top glow line */
+.segment-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(124, 58, 237, 0.2),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+.segment-container:hover::after {
+  opacity: 1;
+}
+
+.segment-equation {
+  border-left: 3px solid var(--accent-nebula);
+}
+
+.segment-equation:hover {
+  border-left-color: var(--accent-galaxy);
+}
+
+.segment-text-block {
+  border-left: 3px solid var(--accent-cosmic);
+}
+
+.segment-text-block:hover {
+  border-left-color: var(--accent-plasma);
+}
+
+.segment-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  margin-bottom: 10px;
+}
+
+.segment-label.equation {
+  color: var(--accent-galaxy);
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+.segment-label.text {
+  color: var(--accent-cosmic);
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px solid rgba(6, 182, 212, 0.12);
+}
+
+/* ═══ Equation display ═══ */
+.equation-display {
+  padding: 20px 16px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  text-align: center;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(124, 58, 237, 0.08);
+  position: relative;
+}
+
+/* Subtle notebook grid inside equation box */
+.equation-display::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 27px,
+      rgba(120, 120, 200, 0.04) 27px,
+      rgba(120, 120, 200, 0.04) 28px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 27px,
+      rgba(120, 120, 200, 0.04) 27px,
+      rgba(120, 120, 200, 0.04) 28px
+    );
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.equation-display .katex {
+  font-size: 1.2em;
+  color: var(--text-primary);
+}
+
+.equation-display .katex-html {
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Text segment styling */
+.text-display {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  padding: 10px 14px;
+}
+
+
+
+
+/* ══════════════════════════════════════════════════
+   ✦ ANALYZER RESULTS — AI Constellation
+   ══════════════════════════════════════════════════ */
+.analyzer-box {
+  margin-top: 12px;
+  padding: 14px;
+  background: rgba(16, 185, 129, 0.04);
+  border: 1px solid rgba(16, 185, 129, 0.12);
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle nebula inside analyzer */
+.analyzer-box::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -30%;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.06), transparent 70%);
+  pointer-events: none;
+}
+
+.analyzer-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-aurora);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.analyzer-value {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+
+.analyzer-explanation {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin: 8px 0 6px;
+  padding: 8px 12px;
+  background: rgba(16, 185, 129, 0.04);
+  border-left: 2px solid rgba(16, 185, 129, 0.3);
+  border-radius: 0 6px 6px 0;
+  font-style: italic;
+}
+
+.analyzer-eq {
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  text-align: center;
+  margin: 10px 0;
+  border: 1px solid rgba(16, 185, 129, 0.08);
+}
+
+.btn-use-refinement {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-aurora);
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: var(--font-body);
+  letter-spacing: 0.01em;
+}
+
+.btn-use-refinement:hover {
+  background: rgba(16, 185, 129, 0.16);
+  border-color: var(--accent-aurora);
+  box-shadow: var(--glow-aurora);
+  transform: translateY(-1px);
+}
+
+/* ═══ Analyzer Complete Flash ═══ */
+.analyzer-complete-flash {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--accent-aurora);
+  font-size: 13px;
+  font-weight: 600;
+  animation: analyzer-pulse 1.5s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.analyzer-complete-flash::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out;
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ ACTION BUTTONS ROW
+   ══════════════════════════════════════════════════ */
+.segment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ DOWNLOAD PICKER — Background color chooser
+   ══════════════════════════════════════════════════ */
+.download-picker {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  min-width: 180px;
+  background: rgba(12, 12, 36, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-md);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    var(--glow-nebula);
+  z-index: 50;
+  overflow: hidden;
+}
+
+.download-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.download-picker-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  background: var(--bg-glass);
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.download-picker-close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--accent-supernova);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.download-picker-options {
+  display: flex;
+  gap: 6px;
+  padding: 4px 12px 12px;
+}
+
+.download-picker-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 12px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.download-picker-btn:hover {
+  transform: translateY(-1px);
+}
+
+.download-picker-black {
+  color: var(--text-primary);
+}
+
+.download-picker-black:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--border-glow);
+  box-shadow: var(--glow-nebula);
+}
+
+.download-picker-white {
+  color: var(--text-primary);
+}
+
+.download-picker-white:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+}
+
+.download-picker-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 1.5px solid rgba(120, 120, 200, 0.3);
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ LOADING STATES — Wormhole & orbit system
+   ══════════════════════════════════════════════════ */
+.loading-orbit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+
+.loading-orbit::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border-subtle);
+  border-top-color: var(--accent-nebula);
+  border-right-color: var(--accent-cosmic);
+  animation: orbit 0.8s linear infinite;
+}
+
+.loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-glass) 25%,
+    rgba(124, 58, 237, 0.06) 50%,
+    var(--bg-glass) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+  border-radius: var(--radius-sm);
+}
+
+.loading-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  min-height: 50vh;
+}
+
+/* Wormhole loading ring */
+.loading-page .orbit-ring {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.loading-page .orbit-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: var(--accent-nebula);
+  border-right-color: var(--accent-cosmic);
+  animation: orbit 1s linear infinite;
+}
+
+.loading-page .orbit-ring::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-bottom-color: var(--accent-galaxy);
+  border-left-color: var(--accent-pulsar);
+  animation: orbit-reverse 1.5s linear infinite;
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ PASSWORD GATE — Space station airlock
+   ══════════════════════════════════════════════════ */
+.password-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: 24px;
+  position: relative;
+  z-index: 10;
+}
+
+.password-card {
+  width: 100%;
+  max-width: 380px;
+  padding: 36px 28px;
+  text-align: center;
+}
+
+.password-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-nebula), var(--accent-cosmic));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: float 4s ease-in-out infinite;
+  box-shadow:
+    0 0 30px rgba(124, 58, 237, 0.3),
+    0 0 60px rgba(124, 58, 237, 0.15);
+  position: relative;
+}
+
+/* Orbiting dot around lock icon */
+.password-icon::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--accent-star);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(245, 166, 35, 0.5);
+  top: -3px;
+  left: 50%;
+  transform-origin: 50% 39px;
+  animation: orbit 3s linear infinite;
+}
+
+.password-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--text-primary), var(--accent-cosmic), var(--accent-galaxy));
+  background-size: 200% 200%;
+  animation: cosmic-gradient 6s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.password-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+
+.password-input {
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  text-align: center;
+  letter-spacing: 0.2em;
+  outline: none;
+  transition: all 0.3s;
+  margin-bottom: 16px;
+}
+
+.password-input:focus {
+  border-color: var(--accent-nebula);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12), var(--glow-nebula);
+}
+
+.password-error {
+  font-size: 13px;
+  color: var(--accent-supernova);
+  margin-bottom: 12px;
+  animation: reveal-up 0.3s ease;
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ APP HEADER — Cosmic title
+   ══════════════════════════════════════════════════ */
+.app-header {
+  text-align: center;
+  padding: 28px 0 24px;
+}
+
+.app-logo {
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(
+    135deg,
+    var(--accent-star),
+    var(--accent-nebula),
+    var(--accent-cosmic),
+    var(--accent-galaxy)
+  );
+  background-size: 300% 300%;
+  animation: cosmic-gradient 6s ease infinite, text-glow 4s ease-in-out infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.app-tagline {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  letter-spacing: 0.03em;
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ METADATA BADGES — Status indicators
+   ══════════════════════════════════════════════════ */
+.metadata-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  border: 1px solid;
+  backdrop-filter: blur(8px);
+}
+
+.badge-confidence {
+  color: var(--accent-star);
+  border-color: rgba(245, 166, 35, 0.2);
+  background: rgba(245, 166, 35, 0.06);
+}
+
+.badge-handwritten {
+  color: var(--accent-aurora);
+  border-color: rgba(16, 185, 129, 0.2);
+  background: rgba(16, 185, 129, 0.06);
+}
+
+.badge-typed {
+  color: var(--accent-cosmic);
+  border-color: rgba(6, 182, 212, 0.2);
+  background: rgba(6, 182, 212, 0.06);
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ SOURCE IMAGE PREVIEW
+   ══════════════════════════════════════════════════ */
+.source-image-container {
+  margin-bottom: 16px;
+}
+
+.source-image {
+  width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ TOAST NOTIFICATION — Cosmic flash
+   ══════════════════════════════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  padding: 10px 22px;
+  background: linear-gradient(135deg, var(--accent-nebula), var(--accent-galaxy));
+  color: white;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow:
+    0 4px 20px rgba(124, 58, 237, 0.4),
+    0 8px 40px rgba(124, 58, 237, 0.15);
+  letter-spacing: 0.01em;
+}
+
+.toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ SCROLLBAR — Minimal cosmic
+   ══════════════════════════════════════════════════ */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.25);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 58, 237, 0.45);
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ BACK LINK — Navigation
+   ══════════════════════════════════════════════════ */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  transition: all 0.3s;
+  padding: 6px 0;
+}
+
+.back-link:hover {
+  color: var(--accent-cosmic);
+  transform: translateX(-3px);
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ EMPTY STATE — Lost in space
+   ══════════════════════════════════════════════════ */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-muted);
+}
+
+.empty-state svg {
+  opacity: 0.25;
+  margin-bottom: 16px;
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ SECTION TITLE — Star chart heading
+   ══════════════════════════════════════════════════ */
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-title::before {
+  content: "";
+  width: 3px;
+  height: 18px;
+  background: linear-gradient(180deg, var(--accent-nebula), var(--accent-cosmic));
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.3);
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ UNDO / REDO BAR — Mobile & Desktop
+   ══════════════════════════════════════════════════ */
+.undo-redo-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.undo-redo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--bg-glass);
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  opacity: 0.4;
+}
+
+.undo-redo-btn:disabled {
+  cursor: not-allowed;
+}
+
+.undo-redo-btn.active {
+  opacity: 1;
+  color: var(--text-secondary);
+}
+
+.undo-redo-btn.active:hover {
+  background: var(--bg-glass-hover);
+  border-color: var(--border-glow);
+  color: var(--text-primary);
+  box-shadow: var(--glow-nebula);
+  transform: translateY(-1px);
+}
+
+.undo-redo-btn.active:active {
+  transform: scale(0.96) translateY(0);
+}
+
+.undo-redo-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background: rgba(124, 58, 237, 0.15);
+  color: var(--accent-galaxy);
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ EQUATION EDITOR — WYSIWYG-like experience
+   ══════════════════════════════════════════════════ */
+.eq-editor {
+  margin-top: 8px;
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(5, 5, 20, 0.6);
+  backdrop-filter: blur(12px);
+  animation: border-glow-pulse 3s ease-in-out infinite;
+}
+
+/* ─── Preview area ─── */
+.eq-editor-preview {
+  padding: 24px 16px;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+  overflow-x: auto;
+}
+
+.eq-editor-preview .katex {
+  font-size: 1.3em;
+  color: var(--text-primary);
+}
+
+.eq-editor-preview .katex-html {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.eq-editor-placeholder {
+  color: var(--text-ghost);
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Subtle star dust in preview */
+.eq-editor-preview::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1px 1px at 15% 25%, rgba(124, 58, 237, 0.15), transparent),
+    radial-gradient(1px 1px at 75% 65%, rgba(6, 182, 212, 0.1), transparent),
+    radial-gradient(1px 1px at 45% 85%, rgba(245, 166, 35, 0.08), transparent);
+  pointer-events: none;
+}
+
+/* ─── Toolbar ─── */
+.eq-editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.eq-editor-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.eq-tool-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  background: var(--bg-glass);
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.eq-tool-btn:hover {
+  background: var(--bg-glass-hover);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+}
+
+.eq-tool-btn:active {
+  transform: scale(0.92);
+}
+
+.eq-tool-btn.eq-tool-active {
+  background: rgba(124, 58, 237, 0.12);
+  color: var(--accent-galaxy);
+  border-color: rgba(124, 58, 237, 0.25);
+}
+
+.eq-tool-btn.eq-tool-delete:hover {
+  color: var(--accent-supernova);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.eq-tool-separator {
+  width: 1px;
+  height: 20px;
+  background: var(--border-subtle);
+  margin: 0 2px;
+}
+
+/* ─── Raw LaTeX textarea ─── */
+.eq-editor-raw {
+  width: 100%;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--accent-solar);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+}
+
+.eq-editor-raw::placeholder {
+  color: var(--text-ghost);
+}
+
+/* ─── Keyboard ─── */
+.eq-editor-keyboard {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.keyboard-tabs {
+  display: flex;
+  overflow-x: auto;
+  gap: 0;
+  border-bottom: 1px solid var(--border-subtle);
+  scrollbar-width: none;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.keyboard-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.keyboard-tab {
+  padding: 9px 13px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s;
+  border-bottom: 2px solid transparent;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.keyboard-tab:hover {
+  color: var(--text-secondary);
+}
+
+.keyboard-tab.active {
+  color: var(--accent-cosmic);
+  border-bottom-color: var(--accent-cosmic);
+  background: rgba(6, 182, 212, 0.05);
+}
+
+.keyboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
+  gap: 4px;
+  padding: 8px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.keyboard-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  min-width: 42px;
+  padding: 4px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-mono);
+}
+
+.keyboard-btn:hover {
+  background: rgba(124, 58, 237, 0.12);
+  border-color: var(--accent-nebula);
+  transform: scale(1.08);
+  box-shadow: var(--glow-nebula);
+}
+
+.keyboard-btn:active {
+  transform: scale(0.92);
+  background: rgba(124, 58, 237, 0.2);
+}
+
+.keyboard-btn .katex {
+  font-size: 0.85em;
+}
+
+/* ─── Done Button ─── */
+.eq-editor-done {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(16, 185, 129, 0.06));
+  color: var(--accent-aurora);
+  border: none;
+  border-top: 1px solid rgba(16, 185, 129, 0.15);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.01em;
+}
+
+.eq-editor-done:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));
+  box-shadow: inset 0 0 30px rgba(16, 185, 129, 0.05);
+}
+
+.eq-editor-done:active {
+  transform: scale(0.98);
+}
+
+/* ─── Text Editor (for text segments) ─── */
+.text-editor {
+  width: 100%;
+  min-height: 60px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.text-editor:focus {
+  border-color: var(--accent-nebula);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12), var(--glow-nebula);
+}
+
+/* ══════════════════════════════════════════════════
+   ✦ MATHLIVE WYSIWYG EDITOR — Wolfram-style editing
+   ══════════════════════════════════════════════════ */
+.math-editor {
+  margin-top: 8px;
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(5, 5, 20, 0.6);
+  backdrop-filter: blur(12px);
+  animation: border-glow-pulse 3s ease-in-out infinite;
+}
+
+/* ─── Toolbar ─── */
+.math-editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(0, 0, 0, 0.2);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.math-editor-toolbar::-webkit-scrollbar {
+  display: none;
+}
+
+.math-editor-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* Newline button with distinct styling */
+.eq-tool-newline {
+  color: var(--accent-aurora) !important;
+}
+
+.eq-tool-newline:hover {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+/* ─── Raw LaTeX textarea ─── */
+.math-editor-raw {
+  width: 100%;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.35);
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--accent-solar);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+}
+
+.math-editor-raw::placeholder {
+  color: var(--text-ghost);
+}
+
+/* ─── Tip bar ─── */
+.math-editor-tip {
+  padding: 6px 12px;
+  font-size: 11px;
+  color: var(--text-ghost);
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.math-editor-tip kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  margin: 0 2px;
+}
+
+.math-editor-field {
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+}
+
+/* Subtle notebook grid in editor background */
+.math-editor-field::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 27px,
+      rgba(120, 120, 200, 0.045) 27px,
+      rgba(120, 120, 200, 0.045) 28px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 27px,
+      rgba(120, 120, 200, 0.045) 27px,
+      rgba(120, 120, 200, 0.045) 28px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.math-editor-field:focus-within {
+  box-shadow: inset 0 0 40px rgba(124, 58, 237, 0.04);
+}
+
+.math-editor-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-ghost);
+  font-size: 14px;
+  padding: 24px 16px;
+  font-style: italic;
+  width: 100%;
+  justify-content: center;
+}
+
+/* ─── MathLive <math-field> element styling ─── */
+.math-editor-field math-field {
+  width: 100%;
+  min-height: 72px;
+  padding: 22px 18px;
+  font-size: 1.35em;
+  background: transparent;
+  border: none;
+  outline: none;
+  position: relative;
+  z-index: 1;
+
+  /* MathLive CSS custom properties for dark theme */
+  --caret-color: #06b6d4;
+  --selection-background-color: rgba(124, 58, 237, 0.3);
+  --contains-highlight-background-color: rgba(6, 182, 212, 0.08);
+  --smart-fence-color: rgba(6, 182, 212, 0.5);
+  --placeholder-color: rgba(150, 150, 200, 0.4);
+  --highlight-inactive-color: rgba(124, 58, 237, 0.12);
+  --text-font-family: var(--font-body);
+
+  color: var(--text-primary);
+}
+
+/* Make sure ML content is visible in dark mode */
+.math-editor-field .ML__mathlive {
+  color: var(--text-primary);
+}
+
+/* ─── MathLive Virtual Keyboard — Dark space theme ─── */
+.ML__keyboard {
+  --keyboard-background: rgba(8, 8, 24, 0.98) !important;
+  --keyboard-border: 1px solid rgba(120, 120, 200, 0.12) !important;
+  --keyboard-toolbar-text: rgba(200, 200, 240, 0.75) !important;
+  --keyboard-toolbar-text-active: #06b6d4 !important;
+  --keyboard-toolbar-background-hover: rgba(6, 182, 212, 0.08) !important;
+  z-index: 1000 !important;
+}
+
+.ML__keyboard .keyboard-layer {
+  background: rgba(8, 8, 24, 0.98) !important;
+}
+
+/* Keyboard key caps */
+.ML__keyboard .action,
+.ML__keyboard .keycap,
+.ML__keyboard .fnbutton,
+.ML__keyboard .bigfnbutton {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: rgba(240, 240, 255, 0.9) !important;
+  border: 1px solid rgba(120, 120, 200, 0.1) !important;
+  border-radius: 6px !important;
+  transition: all 0.15s !important;
+}
+
+.ML__keyboard .action:hover,
+.ML__keyboard .keycap:hover,
+.ML__keyboard .fnbutton:hover,
+.ML__keyboard .bigfnbutton:hover {
+  background: rgba(124, 58, 237, 0.15) !important;
+  border-color: rgba(124, 58, 237, 0.3) !important;
+}
+
+.ML__keyboard .action.is-pressed,
+.ML__keyboard .keycap.is-pressed {
+  background: rgba(124, 58, 237, 0.25) !important;
+  transform: scale(0.95) !important;
+}
+
+.ML__keyboard .action.is-active {
+  background: rgba(6, 182, 212, 0.12) !important;
+  color: #06b6d4 !important;
+  border-color: rgba(6, 182, 212, 0.3) !important;
+}
+
+/* Keyboard separator/dividers */
+.ML__keyboard .separator {
+  border-color: rgba(120, 120, 200, 0.08) !important;
+}
+
+/* Keyboard tooltip */
+.ML__keyboard .shifted-key {
+  color: rgba(200, 200, 240, 0.4) !important;
 }

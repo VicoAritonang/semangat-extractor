@@ -1,0 +1,115 @@
+Saya sedang mengerjakan sebuah project web next js yang berfungsi sebagai image to equation extractor. logic bisnisnya sederhana dimana pengguna dapat mengupload file gambar lalu gambar akan diteruskan ke backend saya dan mengembalikan text dan latex, lalu tampilkan di web. terdapat editor sehingga user bisa mengedit equation langsung di web dengan lengkap dan UX yang bagus. Web ini akan kebanyakan digunakan di mobile jadi buat dia dengan mobile first.
+di .env saya sudah memasukkan file file ini
+SEMANGAT_EXTRACTOR_URL
+SEMANGAT_ANALYZER_URL
+X_API_KEY
+USER_PASSWORD
+NEXT_SUPABASE_URL
+NEXT_SUPABASE_ANON_KEY
+IMGUR_CLIENT_ID
+
+kita akan menggunakan supabase cloud database
+saya sudah membuat table "extraction"
+dengan atribut
+id (uuid)
+image_url : (text)
+extraction : (text)
+confidence : (int)
+is_handwritten : (Boolean)
+analyzer : (text)
+created_at : (timestamptz)
+
+/ (home page)
+terdapat bagian untuk mengupload gambar dari device, lalu dibagian bawahnya terdapat list extraction dengan menampilkan id dan created_at (filter by created at, paling baru diatas). saat di klik akan masuk ke page /[extraction.id]
+
+Flow
+pertama ada tempat untuk mengupload file gambar dari device
+lalu setelah diupload buat tombol untuk mengirim. sebelum dikirim ke backend perkecil dulu ukuran file nya dengan resizer
+lalu lakukan dulu request ke imgur, setelah response tiba, buat extraction baru di supabase (generate uuid untuk id nya), masukkan image_url, 
+
+ini contoh request ke imgur
+import { NextRequest, NextResponse } from "next/server";
+
+export async function POST(request: NextRequest) {
+  const formData = await request.formData();
+  const file = formData.get("file") as File;
+
+  if (!file) {
+    return NextResponse.json({ error: "No file provided" }, { status: 400 });
+  }
+
+  const imgurFormData = new FormData();
+  imgurFormData.append("image", file);
+
+  const res = await fetch("https://api.imgur.com/3/image", {
+    method: "POST",
+    headers: {
+      Authorization: `Client-ID ${process.env.IMGUR_CLIENT_ID}`,
+    },
+    body: imgurFormData,
+  });
+
+  const data = await res.json();
+
+  if (!data.success) {
+    return NextResponse.json(
+      { error: "Failed to upload image" },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({ link: data.data.link });
+}
+
+
+lalu lakukan request POST ke SEMANGAT_EXTRACTOR_URL (dari env) dengan header
+Authorization : X_API_KEY (dari env)
+
+lalu body nya kirimkan "data" binary file gambar yang diupload tadi.
+
+setelah request dikirim langsung route ke /[extraction.id] tadi 
+tunggu response nya datang (buat animasi loading),  response body nya akan berupa json dengan format
+{ "output" : [{list output (nanti dijelaskan)},{}],
+"metadata": {"confidence": int, "is_handwritten" : true/false}}
+
+list output merupakan dynamic size list dengan format
+[ { "type":"text atau equation", "value" : "isi text jika type text, latex jika type equation, tetapi sama sama string"}, {segmen selanjutnya secara berurutan}]
+jadi index dari list menyatakan urutannya jadi index 0 lalu index 1 dan seterusnya
+
+contoh response body secara keseluruhan
+{
+    "output": [
+        {
+            "type": "text",
+            "value": "bellman optimality equation"
+        },
+        {
+            "type": "equation",
+            "value": "\\begin{aligned}\nq_{\\pi}(s, a) & =E_{\\pi}\\left[G_{t} \\mid s_{t}=s, A_{t}-a\\right] \\\\\n& =E_{\\pi}\\left[\\sum_{k=0}^{\\infty} \\gamma^{k} k_{t+k+1} \\mid s_{t}=s, A_{t}=a\\right]\n\\end{aligned}"
+        },
+        {
+            "type": "text",
+            "value": "digunakan Hi reinforcement learning"
+        }
+    ],
+    "metadata": {
+        "confidence": 0.8234643741292378,
+        "is_handwritten": true,
+        "version": "SuperNet-109p4"
+    }
+}
+
+
+response dari SEMANGAT_EXTRACTOR_URL, buat handler untuk rendering nya, jadi saya ingin dia tampilan UI nya bagus. buat dia berurutan, jika text tampilkan text nya dengan baik, lalu pisahkan dengan segmen untuk index selanjutnya. jika dia type equation saya ingin kamu membuat latex render untuk menampilkan latex nya langsung dalam gambar persamaan yang bagus (ui nya harus bagus). untuk setiap segmen buat dia ada tombol edit dimana jika type text diedit artinya kita tinggal mengedit text seperti biasa. jika typenya equation, tampilkan keyboard equation seperti pada wolfram alpha, buat lengkap dan compatible dengan latex (sehingga latex nya masih bisa diedit). lalu untuk setiap segmen equation, buat tombol untuk "copy latex" (dia akan mengcopy latex equation tersebut", tombol "copy Unicode" dia akan mengcopy dalam format Unicode, tombol "copy word equation" (saat di paste nanti ke word dia akan langsung berupa equation (automatis)), lalu ada tombol save as image (saat ditekan dia langsung auto download equation tersebut sebagai image.
+
+setelah response dari SEMANGAT_EXTRACTOR_URL tadi datang kamu sudah bisa melakukan rendering, tetapi saat response datang lakukan request ke SEMANGAT_ANALYZER_URL dengan request header Authorization : X_API_KEY
+request body json { "input" : [list output dari SEMANGAT_EXTRACTOR_URL tadi] }
+jadi sambil menunggu response dari SEMANGAT_ANALYZER_URL kamu bisa render conversion pagenya dengan setiap equation buat animasi loading disamping segmen (menunggu response dari ANALYZER). response body dari analyzer akan berupa {"output" : [list penjelasan equation]} 
+list output dari analyzer itu akan sesuai dengan jumlah equation secara berurutan, misalnya dengan yang tadi, responsenya akan seperti ini
+{"output" : [{"title" : "nama equationnya", "refinement" : "latex"}] (karena equationnya cuma ada 1)
+di setiap segmen equation buat disampingnya juga kemungkinan nama persamaan : [title], kemungkinan persamaan yang sesuai : [refinement] render lalu buat tombol gunakan ini jika di klik maka equation disitu akan berubah menjadi refinement.
+
+untuk setiap perubahan di page /[extraction.id] saya ingin tombol ctrl + z dan ctrl + y bisa melakukan undo dan redo secara perfect dan atomic (step perubahan)
+karena ini cuma saya dan teman saya, saya ingin keamanannya cuma saat web dibuka (setiap saat web dibuka) pengguna harus memasukkan user_password (dari env)
+
+saya ingin ui nya tema nya space and star jadi buat sebaik mungkin (ini saya buat untuk teman saya yang suka space and star)
